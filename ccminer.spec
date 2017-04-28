@@ -20,7 +20,6 @@ BuildRequires:  mpir-devel
 BuildRequires:  openssl-devel
 
 %if 0%{?fedora}
-BuildRequires:  compat-gcc-53
 BuildRequires:  compat-gcc-53-c++
 %endif
 
