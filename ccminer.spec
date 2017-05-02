@@ -17,7 +17,11 @@ BuildRequires:  libcurl-devel >= 7.15.2
 BuildRequires:  libstdc++-devel
 BuildRequires:  libtool
 BuildRequires:  mpir-devel
+%if 0%{?fedora} >= 26
+BuildRequires:  compat-openssl10-devel
+%else
 BuildRequires:  openssl-devel
+%endif
 
 %if 0%{?fedora}
 BuildRequires:  compat-gcc-53-c++
