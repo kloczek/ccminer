@@ -1,13 +1,13 @@
-%define gittag0 2.0-rc3
+%define gittag0 %{version}-tpruvot
 
 Name:           ccminer
 Version:        2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
 URL:            https://github.com/tpruvot/%{name}
 
-Source0:        https://github.com/tpruvot/%{name}/archive/%{gittag0}.tar.gz#/%{name}-%{gittag0}.tar.gz
+Source0:        https://github.com/tpruvot/%{name}/archive/v%{gittag0}.tar.gz#/%{name}-%{gittag0}.tar.gz
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -34,7 +34,7 @@ This is a CUDA accelerated mining application which handles:
     FugueCoin
     GroestlCoin & Myriad-Groestl
     Lbry Credits
-    JackpotCoin
+    JackpotCoin (JHA)
     QuarkCoin family & AnimeCoin
     TalkCoin
     DarkCoin and other X11 coins
@@ -91,6 +91,9 @@ export CXXFLAGS="%{optflags} -fPIC"
 %{_bindir}/ccminer
 
 %changelog
+* Tue May 30 2017 Simone Caronni <negativo17@gmail.com> - 2.0-2
+- Update to 2.0 final.
+
 * Fri Apr 28 2017 Simone Caronni <negativo17@gmail.com> - 2.0-1
 - Update to latest release.
 - Use GCC 5.3 on Fedora.
