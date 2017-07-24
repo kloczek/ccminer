@@ -1,8 +1,8 @@
-%define gittag0 %{version}-tpruvot
+%define gittag0 %{version}-tribus
 
 Name:           ccminer
-Version:        2.0
-Release:        2%{?dist}
+Version:        2.1
+Release:        1%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
 URL:            https://github.com/tpruvot/%{name}
@@ -52,6 +52,8 @@ This is a CUDA accelerated mining application which handles:
     Scrypt-Jane (Chacha)
     Sibcoin (sib)
     Skein (Skein + SHA)
+    Signatum (Skein cubehash fugue Streebog)
+    Tribus (JH, keccak, simd)
     Woodcoin (Double Skein)
     Vanilla (Blake256 8-rounds - double sha256)
     Vertcoin Lyra2RE
@@ -87,10 +89,14 @@ export CXXFLAGS="%{optflags} -fPIC"
 %make_install
 
 %files
-%doc LICENSE.txt README.txt
+%license LICENSE.txt
+%doc README.txt
 %{_bindir}/ccminer
 
 %changelog
+* Mon Jul 24 2017 Simone Caronni <negativo17@gmail.com> - 2.1-1
+- Update to 2.1.
+
 * Tue May 30 2017 Simone Caronni <negativo17@gmail.com> - 2.0-2
 - Update to 2.0 final.
 
