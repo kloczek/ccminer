@@ -1,4 +1,4 @@
-%define gittag0 %{version}-tribus
+%define gittag0 %{version}-tpruvot
 
 Name:           ccminer
 Version:        2.1
