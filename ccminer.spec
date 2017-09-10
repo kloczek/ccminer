@@ -1,13 +1,13 @@
 %define gittag0 %{version}-tpruvot
 
 Name:           ccminer
-Version:        2.1
+Version:        2.2.1
 Release:        1%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
 URL:            https://github.com/tpruvot/%{name}
 
-Source0:        https://github.com/tpruvot/%{name}/archive/v%{gittag0}.tar.gz#/%{name}-%{gittag0}.tar.gz
+Source0:        https://github.com/tpruvot/%{name}/archive/%{gittag0}.tar.gz#/%{name}-%{gittag0}.tar.gz
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -94,6 +94,9 @@ export CXXFLAGS="%{optflags} -fPIC"
 %{_bindir}/ccminer
 
 %changelog
+* Sun Sep 10 2017 Simone Caronni <negativo17@gmail.com> - 2.2.1-1
+- Update to 2.2.1.
+
 * Mon Jul 24 2017 Simone Caronni <negativo17@gmail.com> - 2.1-1
 - Update to 2.1.
 
