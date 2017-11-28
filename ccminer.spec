@@ -1,7 +1,7 @@
 %define gittag0 %{version}-tpruvot
 
 Name:           ccminer
-Version:        2.2.1
+Version:        2.2.2
 Release:        1%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
@@ -24,7 +24,7 @@ BuildRequires:  openssl-devel
 %endif
 
 %if 0%{?fedora}
-BuildRequires:  compat-gcc-53-c++
+BuildRequires:  cuda-gcc-c++
 %endif
 
 %description
@@ -69,18 +69,24 @@ This is a CUDA accelerated mining application which handles:
 sed -i -e 's|-I$with_cuda/include|-I$with_cuda/include/cuda|g' configure.ac
 
 %if 0%{?fedora}
-# Use GCC 5.3 for building
-sed -i -e 's|nvcc"|nvcc -ccbin /usr/bin/g++53 -Xcompiler -fPIC"|g' configure.ac
+# Use compat GCC for building
+sed -i -e 's|nvcc"|nvcc -ccbin /usr/bin/cuda-g++"|g' configure.ac
 %endif
+
+# Disable compute 2.x for CUDA 9
+sed -i \
+    -e 's/compute_20/compute_30/g' \
+    -e 's/sm_20/sm_30/g' \
+    -e 's/sm_21/sm_30/g' \
+    Makefile.am
 
 %build
 autoreconf -vif
 %if 0%{?fedora}
-export CC=/usr/bin/gcc53
-export CXX=/usr/bin/g++53
+export CXX=cuda-g++
 %endif
-export CFLAGS="%{optflags} -fPIC"
-export CXXFLAGS="%{optflags} -fPIC"
+export CXXFLAGS="%{optflags} -fPIC -I%{_includedir} -std=c++11"
+export CUDA_CFLAGS="-Xcompiler '-fPIC -std=c++11'"
 %configure --with-cuda=%{_prefix} --with-nvml=%{_libdir}
 
 %make_build
@@ -94,6 +100,11 @@ export CXXFLAGS="%{optflags} -fPIC"
 %{_bindir}/ccminer
 
 %changelog
+* Wed Nov 01 2017 Simone Caronni <negativo17@gmail.com> - 2.2.2-1
+- Update to 2.2.2.
+- Override compiler with cuda-gcc for CUDA 9 on Fedora.
+- Disable Compute architecture 2.x for CUDA 9.
+
 * Sun Sep 10 2017 Simone Caronni <negativo17@gmail.com> - 2.2.1-1
 - Update to 2.2.1.
 
