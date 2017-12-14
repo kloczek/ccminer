@@ -1,7 +1,7 @@
 %define gittag0 %{version}-tpruvot
 
 Name:           ccminer
-Version:        2.2.2
+Version:        2.2.3
 Release:        1%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
@@ -70,7 +70,7 @@ sed -i -e 's|-I$with_cuda/include|-I$with_cuda/include/cuda|g' configure.ac
 
 %if 0%{?fedora}
 # Use compat GCC for building
-sed -i -e 's|nvcc"|nvcc -ccbin /usr/bin/cuda-g++"|g' configure.ac
+sed -i -e 's|nvcc"|nvcc -ccbin /usr/bin/cuda-g++ -Xcompiler -fPIC"|g' configure.ac
 %endif
 
 # Disable compute 2.x for CUDA 9
@@ -85,8 +85,7 @@ autoreconf -vif
 %if 0%{?fedora}
 export CXX=cuda-g++
 %endif
-export CXXFLAGS="%{optflags} -fPIC -I%{_includedir} -std=c++11"
-export CUDA_CFLAGS="-Xcompiler '-fPIC -std=c++11'"
+export CXXFLAGS="%{optflags} -fPIC"
 %configure --with-cuda=%{_prefix} --with-nvml=%{_libdir}
 
 %make_build
@@ -100,6 +99,9 @@ export CUDA_CFLAGS="-Xcompiler '-fPIC -std=c++11'"
 %{_bindir}/ccminer
 
 %changelog
+* Thu Dec 14 2017 Simone Caronni <negativo17@gmail.com> - 2.2.3-1
+- Update to 2.2.3.
+
 * Wed Nov 01 2017 Simone Caronni <negativo17@gmail.com> - 2.2.2-1
 - Update to 2.2.2.
 - Override compiler with cuda-gcc for CUDA 9 on Fedora.
