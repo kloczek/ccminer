@@ -1,7 +1,7 @@
 %define gittag0 %{version}-tpruvot
 
 Name:           ccminer
-Version:        2.2.3
+Version:        2.2.4
 Release:        1%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
@@ -17,11 +17,7 @@ BuildRequires:  libcurl-devel >= 7.15.2
 BuildRequires:  libstdc++-devel
 BuildRequires:  libtool
 BuildRequires:  mpir-devel
-%if 0%{?fedora} >= 26
-BuildRequires:  compat-openssl10-devel
-%else
 BuildRequires:  openssl-devel
-%endif
 
 %if 0%{?fedora}
 BuildRequires:  cuda-gcc-c++
@@ -73,13 +69,6 @@ sed -i -e 's|-I$with_cuda/include|-I$with_cuda/include/cuda|g' configure.ac
 sed -i -e 's|nvcc"|nvcc -ccbin /usr/bin/cuda-g++ -Xcompiler -fPIC"|g' configure.ac
 %endif
 
-# Disable compute 2.x for CUDA 9
-sed -i \
-    -e 's/compute_20/compute_30/g' \
-    -e 's/sm_20/sm_30/g' \
-    -e 's/sm_21/sm_30/g' \
-    Makefile.am
-
 %build
 autoreconf -vif
 %if 0%{?fedora}
@@ -99,6 +88,9 @@ export CXXFLAGS="%{optflags} -fPIC"
 %{_bindir}/ccminer
 
 %changelog
+* Mon Jan 15 2018 Simone Caronni <negativo17@gmail.com> - 2.2.4-1
+- Update to 2.2.4.
+
 * Thu Dec 14 2017 Simone Caronni <negativo17@gmail.com> - 2.2.3-1
 - Update to 2.2.3.
 
