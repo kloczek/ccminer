@@ -1,7 +1,7 @@
 %define gittag0 %{version}-tpruvot
 
 Name:           ccminer
-Version:        2.2.4
+Version:        2.2.5
 Release:        1%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
@@ -88,6 +88,9 @@ export CXXFLAGS="%{optflags} -fPIC"
 %{_bindir}/ccminer
 
 %changelog
+* Mon Apr 23 2018 Simone Caronni <negativo17@gmail.com> - 2.2.5-1
+- Update to 2.2.5.
+
 * Mon Jan 15 2018 Simone Caronni <negativo17@gmail.com> - 2.2.4-1
 - Update to 2.2.4.
 
