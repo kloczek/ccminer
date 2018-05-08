@@ -61,7 +61,7 @@ This is a CUDA accelerated mining application which handles:
     Aeon (Cryptonight-lite)
 
 %prep
-%autosetup -p1 -qn %{name}-%{gittag0}
+%autosetup -p1 -n %{name}-%{gittag0}
 
 # Make sure to pick up CUDA headers
 sed -i -e 's|-I$with_cuda/include|-I$with_cuda/include/cuda|g' configure.ac
