@@ -76,10 +76,20 @@ sed -i -e 's|nvcc"|nvcc -ccbin /usr/bin/cuda-g++ -Xcompiler -fPIC"|g' configure.
 
 %build
 autoreconf -vif
+
 %if 0%{?fedora}
 export CXX=cuda-g++
 %endif
+
+%if 0%{?fedora} >= 27
+export CFLAGS=`echo %{build_cflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
+export CXXFLAGS=`echo %{build_cxxflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
+export FFLAGS=`echo %{build_fflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
+export FCFLAGS=`echo %{build_fflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
+%else
 export CXXFLAGS="%{optflags} -fPIC"
+%endif
+
 %configure --with-cuda=%{_prefix} --with-nvml=%{_libdir}
 
 %make_build
@@ -93,9 +103,10 @@ export CXXFLAGS="%{optflags} -fPIC"
 %{_bindir}/ccminer
 
 %changelog
-* Wed May 09 2018 Simone Caronni <negativo17@gmail.com>
+* Wed May 09 2018 Simone Caronni <negativo17@gmail.com> - 2.2.5-2
 - Add Monero V7 patch.
 - Momentarily disable annobin plugin.
+- Remove unsupported compiler flags.
 
 * Mon Apr 23 2018 Simone Caronni <negativo17@gmail.com> - 2.2.5-1
 - Update to 2.2.5.
