@@ -1,5 +1,8 @@
 %define gittag0 %{version}-tpruvot
 
+# Disable annobin
+%undefine _annotated_build
+
 Name:           ccminer
 Version:        2.2.5
 Release:        2%{?dist}
@@ -90,8 +93,9 @@ export CXXFLAGS="%{optflags} -fPIC"
 %{_bindir}/ccminer
 
 %changelog
-* Wed Apr 25 2018 Simone Caronni <negativo17@gmail.com>
+* Wed May 09 2018 Simone Caronni <negativo17@gmail.com>
 - Add Monero V7 patch.
+- Momentarily disable annobin plugin.
 
 * Mon Apr 23 2018 Simone Caronni <negativo17@gmail.com> - 2.2.5-1
 - Update to 2.2.5.
