@@ -78,10 +78,10 @@ autoreconf -vif
 
 %if 0%{?fedora}
 export CXX=cuda-g++
-export CFLAGS=`echo %{build_cflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
-export CXXFLAGS=`echo %{build_cxxflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
-export FFLAGS=`echo %{build_fflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
-export FCFLAGS=`echo %{build_fflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
+export CFLAGS=`echo %{build_cflags} -fPIC | sed -e 's/-fstack-clash-protection//g' -e 's/-mcet//g' -e 's/-fcf-protection//g'`
+export CXXFLAGS=`echo %{build_cxxflags} -fPIC | sed -e 's/-fstack-clash-protection//g' -e 's/-mcet//g' -e 's/-fcf-protection//g'`
+export FFLAGS=`echo %{build_fflags} -fPIC | sed -e 's/-fstack-clash-protection//g' -e 's/-mcet//g' -e 's/-fcf-protection//g'`
+export FCFLAGS=`echo %{build_fflags} -fPIC | sed -e 's/-fstack-clash-protection//g' -e 's/-mcet//g' -e 's/-fcf-protection//g'`
 %else
 export CXXFLAGS="%{optflags} -fPIC"
 %endif
