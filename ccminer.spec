@@ -19,7 +19,6 @@ BuildRequires:  jansson-devel
 BuildRequires:  libcurl-devel >= 7.15.2
 BuildRequires:  libstdc++-devel
 BuildRequires:  libtool
-BuildRequires:  mpir-devel
 BuildRequires:  openssl-devel
 
 %if 0%{?fedora}
@@ -46,19 +45,21 @@ This is a CUDA accelerated mining application which handles:
     Pentablake (Blake 512 x5)
     1Coin Triple S
     Neoscrypt (FeatherCoin)
-    Revolver (X11evo)
+    x11evo (Revolver)
+    phi2 (LUXCoin)
     Scrypt and Scrypt:N
     Scrypt-Jane (Chacha)
-    Sibcoin (sib)
+    sib (Sibcoin)
     Skein (Skein + SHA)
     Signatum (Skein cubehash fugue Streebog)
+    SonoA (Sono)
     Tribus (JH, keccak, simd)
     Woodcoin (Double Skein)
     Vanilla (Blake256 8-rounds - double sha256)
     Vertcoin Lyra2RE
     Ziftrcoin (ZR5)
     Boolberry (Wild Keccak)
-    Monero (Cryptonight)
+    Monero (Cryptonight v7 with -a monero)
     Aeon (Cryptonight-lite)
 
 %prep
@@ -77,9 +78,6 @@ autoreconf -vif
 
 %if 0%{?fedora}
 export CXX=cuda-g++
-%endif
-
-%if 0%{?fedora} >= 27
 export CFLAGS=`echo %{build_cflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
 export CXXFLAGS=`echo %{build_cxxflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
 export FFLAGS=`echo %{build_fflags} -fPIC | sed -e 's/-fstack-clash-protection -mcet -fcf-protection//g'`
