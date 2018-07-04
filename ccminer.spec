@@ -4,15 +4,13 @@
 %undefine _annotated_build
 
 Name:           ccminer
-Version:        2.2.5
-Release:        2%{?dist}
+Version:        2.3
+Release:        1%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
 URL:            https://github.com/tpruvot/%{name}
 
 Source0:        https://github.com/tpruvot/%{name}/archive/%{gittag0}.tar.gz#/%{name}-%{gittag0}.tar.gz
-# https://github.com/tpruvot/ccminer/pull/61
-Patch0:         https://patch-diff.githubusercontent.com/raw/tpruvot/ccminer/pull/61.patch#/ccminer-2.2.5-monero-v7.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -64,7 +62,7 @@ This is a CUDA accelerated mining application which handles:
     Aeon (Cryptonight-lite)
 
 %prep
-%autosetup -p1 -n %{name}-%{gittag0}
+%autosetup -n %{name}-%{gittag0}
 
 # Make sure to pick up CUDA headers
 sed -i -e 's|-I$with_cuda/include|-I$with_cuda/include/cuda|g' configure.ac
@@ -103,6 +101,12 @@ export CXXFLAGS="%{optflags} -fPIC"
 %{_bindir}/ccminer
 
 %changelog
+* Wed Jul 04 2018 Simone Caronni <negativo17@gmail.com> - 2.3-1
+- Update to 2.3.
+
+* Thu Jun 14 2018 Simone Caronni <negativo17@gmail.com> - 2.2.6-1
+- Update to 2.2.6, drop Monero V7 patch.
+
 * Wed May 09 2018 Simone Caronni <negativo17@gmail.com> - 2.2.5-2
 - Add Monero V7 patch.
 - Momentarily disable annobin plugin.
