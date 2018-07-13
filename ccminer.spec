@@ -1,8 +1,5 @@
 %define gittag0 %{version}-tpruvot
 
-# Disable annobin
-%undefine _annotated_build
-
 Name:           ccminer
 Version:        2.3
 Release:        1%{?dist}
