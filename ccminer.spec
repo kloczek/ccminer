@@ -1,8 +1,16 @@
-%define gittag0 %{version}-tpruvot
+%global gittag0 %{version}-tpruvot
+
+%if 0%{?fedora} >= 28
+# GCC 7.3 compiler (Fedora 27), disable:
+#   -fstack-clash-protection -fcf-protection -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1
+%undefine _annotated_build
+# Override from /usr/lib/rpm/redhat/rpmrc:
+%global optflags %{__global_compiler_flags} -m64 -mtune=generic -fasynchronous-unwind-tables
+%endif
 
 Name:           ccminer
 Version:        2.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
 URL:            https://github.com/tpruvot/%{name}
@@ -18,7 +26,7 @@ BuildRequires:  libstdc++-devel
 BuildRequires:  libtool
 BuildRequires:  openssl-devel
 
-%if 0%{?fedora}
+%if 0%{?fedora} >= 28
 BuildRequires:  cuda-gcc-c++
 %endif
 
@@ -63,25 +71,21 @@ This is a CUDA accelerated mining application which handles:
 %autosetup -n %{name}-%{gittag0}
 
 # Make sure to pick up CUDA headers
-sed -i -e 's|-I$with_cuda/include|-I$with_cuda/include/cuda|g' configure.ac
+# Add -fPIC to backend compiler for NVCC
+sed -i \
+    -e 's|-I$with_cuda/include|-I$with_cuda/include/cuda|g' \
+    -e 's|NVCC="$with_cuda/bin/nvcc"|NVCC="$with_cuda/bin/nvcc -Xcompiler -fPIC"|' \
+    configure.ac
 
-%if 0%{?fedora}
+%if 0%{?fedora} >= 28
 # Use compat GCC for building
-sed -i -e 's|nvcc"|nvcc -ccbin /usr/bin/cuda-g++ -Xcompiler -fPIC"|g' configure.ac
+sed -i -e 's|nvcc -Xcompiler|nvcc -ccbin /usr/bin/cuda-g++ -Xcompiler|g' configure.ac
 %endif
+
+
 
 %build
 autoreconf -vif
-
-%if 0%{?fedora}
-export CXX=cuda-g++
-export CFLAGS=`echo %{build_cflags} -fPIC | sed -e 's/-fstack-clash-protection//g' -e 's/-mcet//g' -e 's/-fcf-protection//g'`
-export CXXFLAGS=`echo %{build_cxxflags} -fPIC | sed -e 's/-fstack-clash-protection//g' -e 's/-mcet//g' -e 's/-fcf-protection//g'`
-export FFLAGS=`echo %{build_fflags} -fPIC | sed -e 's/-fstack-clash-protection//g' -e 's/-mcet//g' -e 's/-fcf-protection//g'`
-export FCFLAGS=`echo %{build_fflags} -fPIC | sed -e 's/-fstack-clash-protection//g' -e 's/-mcet//g' -e 's/-fcf-protection//g'`
-%else
-export CXXFLAGS="%{optflags} -fPIC"
-%endif
 
 %configure --with-cuda=%{_prefix} --with-nvml=%{_libdir}
 
@@ -96,6 +100,10 @@ export CXXFLAGS="%{optflags} -fPIC"
 %{_bindir}/ccminer
 
 %changelog
+* Tue Aug 28 2018 Simone Caronni <negativo17@gmail.com> - 2.3-2
+- Update for CUDA 9.2 with GCC 7.x.
+- Do not required cuda-gcc in Fedora 27.
+
 * Wed Jul 04 2018 Simone Caronni <negativo17@gmail.com> - 2.3-1
 - Update to 2.3.
 
