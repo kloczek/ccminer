@@ -1,16 +1,16 @@
 %global gittag0 %{version}-tpruvot
 
-%if 0%{?fedora} >= 28
-# GCC 7.3 compiler (Fedora 27), disable:
-#   -fstack-clash-protection -fcf-protection -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1
+%if 0%{?fedora}
+# GCC 7.3.1 compiler (Fedora 27), disable:
+#   -fcf-protection -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1
 %undefine _annotated_build
 # Override from /usr/lib/rpm/redhat/rpmrc:
-%global optflags %{__global_compiler_flags} -m64 -mtune=generic -fasynchronous-unwind-tables
+%global optflags %{__global_compiler_flags} -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection
 %endif
 
 Name:           ccminer
 Version:        2.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
 URL:            https://github.com/tpruvot/%{name}
@@ -20,13 +20,14 @@ Source0:        https://github.com/tpruvot/%{name}/archive/%{gittag0}.tar.gz#/%{
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  cuda-devel
+BuildRequires:  gcc-c++
 BuildRequires:  jansson-devel
 BuildRequires:  libcurl-devel >= 7.15.2
 BuildRequires:  libstdc++-devel
 BuildRequires:  libtool
 BuildRequires:  openssl-devel
 
-%if 0%{?fedora} >= 28
+%if 0%{?fedora}
 BuildRequires:  cuda-gcc-c++
 %endif
 
@@ -77,19 +78,18 @@ sed -i \
     -e 's|NVCC="$with_cuda/bin/nvcc"|NVCC="$with_cuda/bin/nvcc -Xcompiler -fPIC"|' \
     configure.ac
 
-%if 0%{?fedora} >= 28
+%if 0%{?fedora}
 # Use compat GCC for building
 sed -i -e 's|nvcc -Xcompiler|nvcc -ccbin /usr/bin/cuda-g++ -Xcompiler|g' configure.ac
 %endif
-
-
 
 %build
 autoreconf -vif
 
 %configure --with-cuda=%{_prefix} --with-nvml=%{_libdir}
 
-%make_build
+make
+#%make_build
 
 %install
 %make_install
@@ -100,6 +100,10 @@ autoreconf -vif
 %{_bindir}/ccminer
 
 %changelog
+* Thu Jan 03 2019 Simone Caronni <negativo17@gmail.com> - 2.3-3
+- Rebuild for CUDA 10.0 update.
+- Update GCC build flags for GCC 7.3.1.
+
 * Tue Aug 28 2018 Simone Caronni <negativo17@gmail.com> - 2.3-2
 - Update for CUDA 9.2 with GCC 7.x.
 - Do not required cuda-gcc in Fedora 27.
