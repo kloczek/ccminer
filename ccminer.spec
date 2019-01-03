@@ -16,6 +16,7 @@ License:        GPLv2 and GPLv3
 URL:            https://github.com/tpruvot/%{name}
 
 Source0:        https://github.com/tpruvot/%{name}/archive/%{gittag0}.tar.gz#/%{name}-%{gittag0}.tar.gz
+Patch0:         %{name}-2.3-nvcc-arch.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -69,7 +70,7 @@ This is a CUDA accelerated mining application which handles:
     Aeon (Cryptonight-lite)
 
 %prep
-%autosetup -n %{name}-%{gittag0}
+%autosetup -p1 -n %{name}-%{gittag0}
 
 # Make sure to pick up CUDA headers
 # Add -fPIC to backend compiler for NVCC
@@ -103,6 +104,7 @@ make
 * Thu Jan 03 2019 Simone Caronni <negativo17@gmail.com> - 2.3-3
 - Rebuild for CUDA 10.0 update.
 - Update GCC build flags for GCC 7.3.1.
+- Enable additional CUDA 10 architectures.
 
 * Tue Aug 28 2018 Simone Caronni <negativo17@gmail.com> - 2.3-2
 - Update for CUDA 9.2 with GCC 7.x.
