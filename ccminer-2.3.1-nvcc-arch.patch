@@ -1,0 +1,23 @@
+diff -Naur ccminer-2.3.1-tpruvot.old/Makefile.am ccminer-2.3.1-tpruvot/Makefile.am
+--- ccminer-2.3.1-tpruvot.old/Makefile.am	2019-04-07 17:14:19.903123375 +0200
++++ ccminer-2.3.1-tpruvot/Makefile.am	2019-04-07 17:16:42.695803686 +0200
+@@ -118,13 +118,13 @@
+ ccminer_LDADD += -lcuda
+ 
+ nvcc_ARCH :=
+-#nvcc_ARCH += -gencode=arch=compute_75,code=\"sm_75,compute_75\" # CUDA 10 req.
+-#nvcc_ARCH += -gencode=arch=compute_70,code=\"sm_70,compute_70\" # CUDA 9.1
+-#nvcc_ARCH += -gencode=arch=compute_61,code=\"sm_61,compute_61\" # CUDA 8
++nvcc_ARCH += -gencode=arch=compute_75,code=\"sm_75,compute_75\" # CUDA 10 req.
++nvcc_ARCH += -gencode=arch=compute_70,code=\"sm_70,compute_70\" # CUDA 9.1
++nvcc_ARCH += -gencode=arch=compute_61,code=\"sm_61,compute_61\" # CUDA 8
+ nvcc_ARCH += -gencode=arch=compute_52,code=\"sm_52,compute_52\"
+-#nvcc_ARCH += -gencode=arch=compute_50,code=\"sm_50,compute_50\"
+-#nvcc_ARCH += -gencode=arch=compute_35,code=\"sm_35,compute_35\"
+-#nvcc_ARCH += -gencode=arch=compute_30,code=\"sm_30,compute_30\"
++nvcc_ARCH += -gencode=arch=compute_50,code=\"sm_50,compute_50\"
++nvcc_ARCH += -gencode=arch=compute_35,code=\"sm_35,compute_35\"
++nvcc_ARCH += -gencode=arch=compute_30,code=\"sm_30,compute_30\"
+ 
+ nvcc_FLAGS = $(nvcc_ARCH) @CUDA_INCLUDES@ -I. @CUDA_CFLAGS@
+ nvcc_FLAGS += $(JANSSON_INCLUDES) --ptxas-options="-v"

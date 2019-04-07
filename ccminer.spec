@@ -9,14 +9,14 @@
 %endif
 
 Name:           ccminer
-Version:        2.3
-Release:        3%{?dist}
+Version:        2.3.1
+Release:        1%{?dist}
 Summary:        CUDA miner project
 License:        GPLv2 and GPLv3
 URL:            https://github.com/tpruvot/%{name}
 
 Source0:        https://github.com/tpruvot/%{name}/archive/%{gittag0}.tar.gz#/%{name}-%{gittag0}.tar.gz
-Patch0:         %{name}-2.3-nvcc-arch.patch
+Patch0:         %{name}-2.3.1-nvcc-arch.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -79,7 +79,7 @@ sed -i \
     -e 's|NVCC="$with_cuda/bin/nvcc"|NVCC="$with_cuda/bin/nvcc -Xcompiler -fPIC"|' \
     configure.ac
 
-%if 0%{?fedora}
+%if 0%{?fedora} >= 30
 # Use compat GCC for building
 sed -i -e 's|nvcc -Xcompiler|nvcc -ccbin /usr/bin/cuda-g++ -Xcompiler|g' configure.ac
 %endif
@@ -89,8 +89,7 @@ autoreconf -vif
 
 %configure --with-cuda=%{_prefix} --with-nvml=%{_libdir}
 
-make
-#%make_build
+%make_build
 
 %install
 %make_install
@@ -101,6 +100,9 @@ make
 %{_bindir}/ccminer
 
 %changelog
+* Sun Apr 07 2019 Simone Caronni <negativo17@gmail.com> - 2.3.1-1
+- Update to 2.3.1.
+
 * Thu Jan 03 2019 Simone Caronni <negativo17@gmail.com> - 2.3-3
 - Rebuild for CUDA 10.0 update.
 - Update GCC build flags for GCC 7.3.1.
